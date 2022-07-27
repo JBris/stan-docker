@@ -12,7 +12,7 @@ ENV R_PACKAGES="\
     future \
 " 
 
-RUN install2.r --error --skipinstalled --deps TRUE $R_PACKAGES
+RUN install2.r --error --skipinstalled $R_PACKAGES
 
 RUN mkdir -p $HOME/.R/ \ 
   && echo "CXX=clang++ -stdlib=libc++ -fsanitize=address,undefined -fno-sanitize=float-divide-by-zero -fno-omit-frame-pointer -fsanitize-address-use-after-scope -fno-sanitize=alignment -frtti" >> $HOME/.R/Makevars \
@@ -26,18 +26,8 @@ RUN mkdir -p $HOME/.R/ \
   && echo "options(mc.cores = parallel::detectCores())" >> /home/rstudio/.Rprofile
 
 RUN Rscript -e 'Sys.setenv(DOWNLOAD_STATIC_LIBV8 = 1); install.packages("rstan")'
-
-ENV CMDSTAN /usr/share/.cmdstan
-
-RUN cd /usr/share/ \
-  && wget --progress=dot:mega https://github.com/stan-dev/cmdstan/releases/download/v2.30.0/cmdstan-2.30.0.tar.gz \
-  && tar -zxpf cmdstan-2.30.0.tar.gz && mv cmdstan-2.30.0 .cmdstan \
-  && ln -s .cmdstan cmdstan && cd .cmdstan && echo "CXX = clang++" >> make/local \
-  && make build
-
-RUN Rscript -e 'install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))' 
  
-RUN install2.r --error --skipinstalled --deps TRUE rstanarm
+RUN install2.r --error --skipinstalled rstanarm
 
 ENV BAYES_R_PACKAGES="\
     brms \
@@ -46,4 +36,4 @@ ENV BAYES_R_PACKAGES="\
     Matrix \
 " 
 
-RUN install2.r --error --skipinstalled --deps TRUE $BAYES_R_PACKAGES
+RUN install2.r --error --skipinstalled $BAYES_R_PACKAGES

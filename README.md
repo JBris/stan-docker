@@ -8,7 +8,9 @@
 
 ### Introduction
 
-A Docker image to run Stan, cmdstanr, and brms for Bayesian statistical modelling
+A Docker image to run Stan, rstanarm, and brms for Bayesian statistical modelling
+
+Launch an RStudio webserver using `bash stan_serve.sh`.
 
 Execute `docker pull ghcr.io/jbris/stan-docker:latest` or `bash docker_pull.sh` to pull the image.
 
@@ -21,12 +23,9 @@ The following packages are installed during the image build process:
 * [Stan](https://mc-stan.org/)
 * [RStan](https://mc-stan.org/users/interfaces/rstan)
 * [rstanarm](https://mc-stan.org/rstanarm/)
-* [CmdStan](https://mc-stan.org/users/interfaces/cmdstan)
 * [brms](https://paul-buerkner.github.io/brms/)
 * [tidybayes](https://mjskay.github.io/tidybayes/)
 * [bayesplot](https://mc-stan.org/bayesplot/)
-
-The [brms_within_chain_parallelization.R](brms_within_chain_parallelization.R) script can be executed within the Docker container to evaluate whether within-chain parallelization, CmdStan, and brms are working properly.
 
 ### Docker
 
@@ -39,4 +38,3 @@ Running docker-compose will bind a volume, mapping the container's `home` direct
 See the [Dockerfile](Dockerfile) for the instructions executed during the build of the Docker image. 
 
 View [docker-compose.yaml](docker-compose.yaml) to see the definition for the Stan service.
-
